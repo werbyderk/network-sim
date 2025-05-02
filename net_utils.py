@@ -30,7 +30,7 @@ class Host:
             self.container = docker_client.containers.run(
                 'python:3.10-alpine',
                 name=name,
-                ports=ports,
+                ports={str(port): str(port) for port in ports},
                 detach=True,
                 cap_add=['NET_ADMIN', 'SYS_ADMIN'],
                 privileged=True,
@@ -81,10 +81,10 @@ class Host:
             Host.hosts.append(self)
         except Exception as e:
             print(f"Error creating host {self.name}: {e}")
-            self.__del__()
+            self.remove()
             raise e
 
-    def __del__(self):
+    def remove(self):
         if self.container is not None:
             self.container.kill()
             self.container.remove()
@@ -201,7 +201,7 @@ ip route {self.lan_ip}/{24} {self.wan_ip}
                 
         except Exception as e:
             print(f"Error creating gateway {self.name}: {e}")
-            self.__del__()
+            self.remove()
             raise e
 
     def write_file_to_container(self, container, path, content):
@@ -240,11 +240,11 @@ ip route {self.lan_ip}/{24} {self.wan_ip}
         host.connected = True
         self.hosts.append(host)
 
-    def __del__(self):
+    def remove(self):
         while self.hosts:
             host = self.hosts.pop()
             print(f"Removing host {host.name}")
-            del host
+            host.remove()
         if self.container is not None:
             self.container.kill()
             self.container.remove()

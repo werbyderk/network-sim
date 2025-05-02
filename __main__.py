@@ -28,7 +28,7 @@ if __name__ == "__main__":
             case 5:
                 print("Shutting down...")
                 while Gateway.gateways:
-                    del Gateway.gateways[0]
+                    Gateway.gateways[0].remove()
                 if Gateway.wan:
                     Gateway.wan.remove()
                 break
