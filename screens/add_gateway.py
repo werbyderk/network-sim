@@ -5,7 +5,7 @@ from network_sim.screens.utils import clear_screen
 @clear_screen
 def add_gateway():
     print("[Add Gateway]\n")
-    print("Create a new Gateway. Used to connect Hosts to each other over LAN. Local Hosts will be able to access remote Hosts through other Gateways through the WAN.\n")
+    print("Create a new Gateway. Used to connect Hosts to each other over virtual LAN, and enables network communication between Hosts. Local Hosts will be able to access remote Hosts through other Gateways through the WAN.\n")
     gateway_name = questionary.text("Gateway Name:").ask()
     print(f"Ready to create Gateway '{gateway_name}'.")
     confirm = questionary.confirm("Proceed?", default=True).ask()
